@@ -43,8 +43,8 @@ def convert_pptx_to_png(pptx_file):
         # Save as PNG in the presentation folder, starting from 1.png
         thumbnail.save(os.path.join(output_folder, "{i}.png".format(i=index + 1)), drawing.imaging.ImageFormat.png)
     root.destroy()
-    subprocess.run([sys.executable, "main.py"])
     hide_loading_screen()
+    subprocess.run([sys.executable, "main.py"])
 
 def upload_pptx():
     global selected_pptx_file
