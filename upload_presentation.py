@@ -5,8 +5,21 @@ from tkinter import Tk, Button, Label, filedialog
 import subprocess
 import sys
 
+def show_loading_screen():
+    global loading_screen
+    loading_screen = Tk()
+    loading_screen.title("Loading")
+    loading_screen.geometry("300x100")
+    Label(loading_screen, text="Loading. Please Wait.").pack(pady=20)
+    loading_screen.update()
+
+def hide_loading_screen():
+    global loading_screen
+    loading_screen.destroy()
+
 def convert_pptx_to_png(pptx_file):
     global root
+    show_loading_screen()
     # Load presentation
     pres = slides.Presentation(pptx_file)
 
@@ -22,7 +35,7 @@ def convert_pptx_to_png(pptx_file):
         # Get reference of slide
         slide = pres.slides[index]
 
-        # Create a thumbnail with the specified size
+        # Modifying size of the slide
         scale_x = 1280 / slide_size.width
         scale_y = 720 / slide_size.height
         thumbnail = slide.get_thumbnail(scale_x, scale_y)
@@ -31,15 +44,18 @@ def convert_pptx_to_png(pptx_file):
         thumbnail.save(os.path.join(output_folder, "{i}.png".format(i=index + 1)), drawing.imaging.ImageFormat.png)
     root.destroy()
     subprocess.run([sys.executable, "main.py"])
+    hide_loading_screen()
 
 def upload_pptx():
+    global selected_pptx_file
     pptx_file = filedialog.askopenfilename(filetypes=[("PowerPoint files", "*.pptx")])
     if pptx_file:
         pptx_label.config(text=os.path.basename(pptx_file))
-        convert_pptx_to_png(pptx_file)
+        selected_pptx_file = pptx_file
 
 if __name__ == "__main__":
-    global root
+    global root, selected_pptx_file, loading_screen
+    selected_pptx_file = None
     # Create the UI
     root = Tk()
     root.title("Upload PPTX")
@@ -51,7 +67,7 @@ if __name__ == "__main__":
     pptx_label = Label(root, text="No file selected")
     pptx_label.pack(pady=10)
 
-    submit_button = Button(root, text="Submit", command=lambda: convert_pptx_to_png(pptx_label.cget("text")))
+    submit_button = Button(root, text="Submit", command=lambda: convert_pptx_to_png(selected_pptx_file))
     submit_button.pack(pady=10)
 
     root.mainloop()
