@@ -1,4 +1,6 @@
 # Hand-Gesture-Presentation
 Moving slides based on handgestures
 
-Do note if there are missing depedencies, install aspose, mediapipe, cvzone, opencv and glob.
+Use your pinky to move your slide forward
+Use your thumb to move your slide backward
+Use your one hand by spreading and showing all your five fingers to close the presentation
