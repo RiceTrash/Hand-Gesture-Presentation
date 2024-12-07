@@ -2,17 +2,41 @@ import os
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 import glob
+import shutil
+import tkinter as tk
+from tkinter import simpledialog
+import sys
 
-def cleanup_presentation_folder():
-    # Remove all PNG files in the presentation folder
-    png_files = glob.glob(os.path.join(folderPath, "*.png"))
-    for file in png_files:
-        os.remove(file)
+def cleanup_presentation_folder(destination_folder=None):
+    if destination_folder:
+        # Create the destination folder if it doesn't exist
+        if not os.path.exists(destination_folder):
+            os.makedirs(destination_folder)
+        # Move all PNG files to the destination folder
+        png_files = glob.glob(os.path.join(folderPath, "*.png"))
+        for file in png_files:
+            shutil.move(file, destination_folder)
+    # Ensure the presentation folder is empty
+    for file in os.listdir(folderPath):
+        file_path = os.path.join(folderPath, file)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+
+def get_folder_name():
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+    folder_name = simpledialog.askstring("Input", "Enter the folder name to save the presentation images:")
+    root.destroy()
+    return folder_name
+
+# Print OpenCV build information for debugging
+print(cv2.getBuildInformation())
+print(cv2.__version__)
+print(cv2.RETR_EXTERNAL)
 
 #variables
 width, height=1280, 720
-folderPath = "presentation"
-
+folderPath = sys.argv[1] if len(sys.argv) > 1 else "presentation"
 
 #Camera Setup
 cap = cv2.VideoCapture(0)
@@ -73,12 +97,10 @@ try:
                 buttonCounter = 0
                 buttonPressed = False
 
-
         # Adding webcam image on the slides
         imgSmall = cv2.resize(img, (ws, hs))
         h, w, _ = imgCurrent.shape
         imgCurrent[0:hs, w-ws:w] = imgSmall
-
 
         cv2.imshow("Image", img)
         cv2.imshow("Slides", imgCurrent)
@@ -86,6 +108,14 @@ try:
         if key == ord('q'):
             break
 finally:
-    cleanup_presentation_folder()
+    if folderPath == "presentation":
+        folder_name = get_folder_name()
+        if folder_name:
+            destination_folder = os.path.join("saved", folder_name)
+            cleanup_presentation_folder(destination_folder)
+        else:
+            cleanup_presentation_folder()
+    else:
+        cleanup_presentation_folder()
     cap.release()
     cv2.destroyAllWindows()

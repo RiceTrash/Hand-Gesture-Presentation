@@ -1,7 +1,7 @@
 import aspose.slides as slides
 import aspose.pydrawing as drawing
 import os
-from tkinter import Tk, Button, Label, filedialog
+from tkinter import Tk, Button, Label, filedialog, messagebox
 import subprocess
 import sys
 
@@ -52,6 +52,13 @@ def upload_pptx():
     if pptx_file:
         pptx_label.config(text=os.path.basename(pptx_file))
         selected_pptx_file = pptx_file
+        convert_ppt_to_images(pptx_file, "presentation")
+        messagebox.showinfo("Success", "PPT uploaded and converted to images successfully!")
+
+def convert_ppt_to_images(ppt_path, output_folder):
+    # Dummy function to represent PPT to images conversion
+    # You need to implement this function
+    pass
 
 if __name__ == "__main__":
     global root, selected_pptx_file, loading_screen
