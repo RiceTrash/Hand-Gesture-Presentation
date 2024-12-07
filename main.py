@@ -6,6 +6,7 @@ import shutil
 import tkinter as tk
 from tkinter import simpledialog
 import sys
+import time
 
 def cleanup_presentation_folder(destination_folder=None):
     if destination_folder:
@@ -54,6 +55,8 @@ gestureThreshold = 700
 buttonPressed = False
 buttonCounter = 0
 buttonDelay = 30
+closeCounter = 0
+closeThreshold = 3  # 
 
 # Hand Detector
 detector = HandDetector(detectionCon=0.8,maxHands=1)
@@ -69,26 +72,36 @@ try:
         hands, img = detector.findHands(img)
         cv2.line(img, (0, gestureThreshold), (width, gestureThreshold), (0, 255, 0), 10)
 
-        if hands and buttonPressed is False:
+        if hands:
             hand = hands[0]
             fingers = detector.fingersUp(hand)
             cx, cy = hand['center']
 
-            if cy <=gestureThreshold: # if hand is the height of the face
+            if cy <= gestureThreshold:  # if hand is the height of the face
 
                 # Gesture 1 - Left
-                if fingers == [1,0,0,0,0]:
+                if fingers == [1,0,0,0,0] and not buttonPressed:
                     print("Left")
                     if imgNumber > 0:
                         buttonPressed = True
                         imgNumber -= 1
+                        
 
                 # Gesture 1 - Right
-                if fingers == [0, 0, 0, 0, 1]:
+                if fingers == [0, 0, 0, 0, 1] and not buttonPressed:
                     print("Right")
                     if imgNumber < len(pathImages)-1:
                         buttonPressed = True
                         imgNumber += 1
+                    
+
+                # Gesture to close the application
+                if fingers == [1, 1, 1, 1, 1]:
+                    closeCounter += 1
+                    if closeCounter > closeThreshold * 30:  # Assuming 30 FPS
+                        break
+                else:
+                    closeCounter = 0
 
         # Button Pressed iterations
         if buttonPressed:
