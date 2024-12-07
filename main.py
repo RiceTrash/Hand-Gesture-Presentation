@@ -24,10 +24,26 @@ def cleanup_presentation_folder(destination_folder=None):
             os.remove(file_path)
 
 def get_folder_name():
+    def on_confirm():
+        global folder_name
+        folder_name = entry.get()
+        root.destroy()
+
     root = tk.Tk()
-    root.withdraw()  # Hide the root window
-    folder_name = simpledialog.askstring("Input", "Enter the folder name to save the presentation images:")
-    root.destroy()
+    root.title("Save Presentation")
+    root.geometry("400x200")
+    root.configure(bg="#f0f0f0")
+
+    label = tk.Label(root, text="Enter the folder name:", font=("Helvetica", 14), bg="#f0f0f0")
+    label.pack(pady=20, padx=50)
+
+    entry = tk.Entry(root, font=("Helvetica", 14))
+    entry.pack(pady=10)
+
+    confirm_button = tk.Button(root, text="Confirm", command=on_confirm, font=("Helvetica", 14), bg="#4CAF50", fg="white", padx=0, pady=10)
+    confirm_button.pack(pady=20)
+
+    root.mainloop()
     return folder_name
 
 # Print OpenCV build information for debugging
