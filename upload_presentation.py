@@ -66,15 +66,22 @@ if __name__ == "__main__":
     # Create the UI
     root = Tk()
     root.title("Upload PPTX")
-    root.geometry("400x200")
+    root.geometry("1280x720")  # Set the resolution size
 
-    upload_button = Button(root, text="Upload PPTX", command=upload_pptx)
-    upload_button.pack(pady=10)
+    # Set a background color
+    root.configure(bg="#f0f0f0")
 
-    pptx_label = Label(root, text="No file selected")
-    pptx_label.pack(pady=10)
+    # Add a title label
+    title_label = Label(root, text="Upload PPTX", font=("Helvetica", 24), bg="#f0f0f0")
+    title_label.pack(pady=40)
 
-    submit_button = Button(root, text="Submit", command=lambda: convert_pptx_to_png(selected_pptx_file))
-    submit_button.pack(pady=10)
+    upload_button = Button(root, text="Upload PPTX", command=upload_pptx, font=("Helvetica", 16), bg="#4CAF50", fg="white", padx=20, pady=10)
+    upload_button.pack(pady=20)
+
+    pptx_label = Label(root, text="No file selected", font=("Helvetica", 16), bg="#f0f0f0")
+    pptx_label.pack(pady=20)
+
+    submit_button = Button(root, text="Submit", command=lambda: convert_pptx_to_png(selected_pptx_file), font=("Helvetica", 16), bg="#2196F3", fg="white", padx=20, pady=10)
+    submit_button.pack(pady=20)
 
     root.mainloop()

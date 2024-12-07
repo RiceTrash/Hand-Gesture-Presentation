@@ -44,11 +44,20 @@ def convert_ppt_to_images(ppt_path, output_folder):
 
 root = tk.Tk()
 root.title("Home Page")
+root.geometry("1280x720")  # Set the resolution size
 
-upload_button = tk.Button(root, text="Upload PPT", command=upload_ppt)
+# Set a background color
+root.configure(bg="#f0f0f0")
+
+# Add a title label
+title_label = tk.Label(root, text="Hand Gesture Presentation", font=("Helvetica", 24), bg="#f0f0f0")
+title_label.pack(pady=40)
+
+# Add buttons with improved styling
+upload_button = tk.Button(root, text="Upload PPT", command=upload_ppt, font=("Helvetica", 16), bg="#4CAF50", fg="white", padx=20, pady=10)
 upload_button.pack(pady=20)
 
-choose_folder_button = tk.Button(root, text="Choose Saved Folder", command=choose_saved_folder)
+choose_folder_button = tk.Button(root, text="Choose Saved Folder", command=choose_saved_folder, font=("Helvetica", 16), bg="#2196F3", fg="white", padx=20, pady=10)
 choose_folder_button.pack(pady=20)
 
 root.mainloop()
