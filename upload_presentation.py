@@ -60,6 +60,10 @@ def convert_ppt_to_images(ppt_path, output_folder):
     # You need to implement this function
     pass
 
+def go_back():
+    root.destroy()
+    subprocess.run([sys.executable, "home.py"])
+
 if __name__ == "__main__":
     global root, selected_pptx_file, loading_screen
     selected_pptx_file = None
@@ -70,6 +74,10 @@ if __name__ == "__main__":
 
     # Set a background color
     root.configure(bg="#f0f0f0")
+
+    # Add a back button
+    back_button = Button(root, text="← Back", command=go_back, font=("Helvetica", 14), bg="#2196F3", fg="white", padx=20, pady=10)
+    back_button.pack(pady=20, anchor='ne')
 
     # Add a title label
     title_label = Label(root, text="Upload PPTX", font=("Helvetica", 24), bg="#f0f0f0")
