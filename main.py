@@ -115,7 +115,7 @@ try:
         h, w, _ = imgCurrent.shape
         imgCurrent[0:hs, w-ws:w] = imgSmall
 
-        cv2.imshow("Image", img)
+        # cv2.imshow("Image", img)
         cv2.imshow("Slides", imgCurrent)
         key = cv2.waitKey(1)
         if key == ord('q'):

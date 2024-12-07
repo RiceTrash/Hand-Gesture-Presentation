@@ -39,6 +39,11 @@ def choose_saved_folder():
         else:
             messagebox.showerror("Error", "Please select a folder inside the 'saved' directory.")
 
+    def on_close():
+        folder_selection_window.destroy()
+        upload_button.config(state=tk.NORMAL)
+        choose_folder_button.config(state=tk.NORMAL)
+
     saved_folder_path = os.path.join(os.getcwd(), "saved")
     folders = [f for f in os.listdir(saved_folder_path) if os.path.isdir(os.path.join(saved_folder_path, f))]
 
@@ -47,6 +52,11 @@ def choose_saved_folder():
     folder_selection_window.title("Select a Folder")
     folder_selection_window.geometry("400x300")
     folder_selection_window.configure(bg="#f0f0f0")
+    folder_selection_window.protocol("WM_DELETE_WINDOW", on_close)
+
+    # Disable main window buttons
+    upload_button.config(state=tk.DISABLED)
+    choose_folder_button.config(state=tk.DISABLED)
 
     # Add a title label
     title_label = tk.Label(folder_selection_window, text="Select a Folder", font=("Helvetica", 18), bg="#f0f0f0")
